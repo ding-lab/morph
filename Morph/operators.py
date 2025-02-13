@@ -42,3 +42,18 @@ def reconstruction_by_dilation(marker_image, mask_image, element=None):
         marker_image, mask_image, method, element)
     dtype = marker_image.dtype
     return image.astype(dtype)
+
+
+def propagation_function(image, element=None):
+    points = numpy.where(image)
+    propagation = numpy.zeros_like(image)
+    for x, y in zip(*points):
+        dilated = numpy.zeros_like(image)
+        dilated[x, y] = 1
+        reconstructed = reconstruction_by_dilation(dilated, image, element)
+        i = 0
+        while not numpy.array_equal(dilated, reconstructed):
+            dilated = geodesic_dilation(dilated, image, element)
+            i += 1
+        propagation[x, y] = i
+    return propagation
