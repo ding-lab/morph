@@ -34,3 +34,11 @@ def reconstruction_by_erosion(marker_image, mask_image, element=None):
         marker_image, mask_image, method, element)
     dtype = marker_image.dtype
     return image.astype(dtype)
+
+
+def reconstruction_by_dilation(marker_image, mask_image, element=None):
+    method = 'dilation'
+    image = skimage.morphology.reconstruction(
+        marker_image, mask_image, method, element)
+    dtype = marker_image.dtype
+    return image.astype(dtype)
