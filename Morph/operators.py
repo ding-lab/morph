@@ -1,4 +1,5 @@
 import numpy
+import scipy
 import skimage
 
 
@@ -57,3 +58,9 @@ def propagation_function(image, element=None):
             i += 1
         propagation[x, y] = i
     return propagation
+
+
+def labeling(image, element=None):
+    labeled, _ = scipy.ndimage.label(image, element)
+    dtype = image.dtype
+    return labeled.astype(dtype)
