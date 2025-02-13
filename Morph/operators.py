@@ -26,3 +26,11 @@ def geodesic_erosion(marker_image, mask_image, element=None):
 def geodesic_dilation(marker_image, mask_image, element=None):
     image = dilation(marker_image, element)
     return numpy.minimum(mask_image, image)
+
+
+def reconstruction_by_erosion(marker_image, mask_image, element=None):
+    method = 'erosion'
+    image = skimage.morphology.reconstruction(
+        marker_image, mask_image, method, element)
+    dtype = marker_image.dtype
+    return image.astype(dtype)
