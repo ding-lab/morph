@@ -12,3 +12,6 @@ class Mapper:
             datum['x'] = int(datum['x'] / d)
             datum['y'] = int(datum['y'] / d)
         return data
+
+    def custom(self, data, mapper, *args):
+        return mapper(data, *args)

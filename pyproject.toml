@@ -1,6 +1,6 @@
 [project]
 name = "morph"
-version = "0.13.0"
+version = "0.14.0"
 dependencies = [
   "numpy==2.2.2",
   "scipy==1.15.1",
