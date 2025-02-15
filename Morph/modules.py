@@ -1,4 +1,5 @@
 import numpy
+import skimage
 
 import Morph.operators
 
@@ -94,3 +95,8 @@ class Thresholder:
 class AlgebraicFilter:
     def naive(self, image):
         return image
+
+    def area_opening(self, image, la):
+        dtype = image.dtype
+        image = skimage.morphology.remove_small_objects(image, la)
+        return image.astype(dtype)
