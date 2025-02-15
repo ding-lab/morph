@@ -48,3 +48,9 @@ class Counter:
             y = datum['y']
             image[g][x, y] += 1
         return image
+
+
+class Muxer:
+    def naive(self, image):
+        for i in image:
+            return image[i]
