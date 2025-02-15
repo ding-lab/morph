@@ -1,5 +1,7 @@
 import numpy
 
+import Morph.operators
+
 
 class Mapper:
     def naive(self, data):
@@ -63,3 +65,6 @@ class Muxer:
 class MorphologicalFilter:
     def naive(self, image):
         return image
+
+    def opening(self, image, element):
+        return Morph.operators.opening(image, element)
