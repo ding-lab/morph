@@ -58,3 +58,8 @@ class Muxer:
     def maximum(self, image):
         array = [image[i] for i in image]
         return numpy.maximum.reduce(array)
+
+
+class MorphologicalFilter:
+    def naive(self, image):
+        return image
