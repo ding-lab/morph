@@ -89,3 +89,8 @@ class Thresholder:
         dtype = image.dtype
         image = image >= tau
         return image.astype(dtype)
+
+
+class AlgebraicFilter:
+    def naive(self, image):
+        return image
