@@ -54,3 +54,7 @@ class Muxer:
     def naive(self, image):
         for i in image:
             return image[i]
+
+    def maximum(self, image):
+        array = [image[i] for i in image]
+        return numpy.maximum.reduce(array)
