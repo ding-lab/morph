@@ -34,3 +34,17 @@ class Counter:
                 y = datum['y']
                 image[g][x, y] = 1
         return image
+
+    def total(self, data, G):
+        image = {}
+        x = max(datum['x'] for datum in data) + 1
+        y = max(datum['y'] for datum in data) + 1
+        shape = (x, y)
+        for g in G:
+            image[g] = numpy.zeros(shape)
+        for datum in data:
+            g = datum['g']
+            x = datum['x']
+            y = datum['y']
+            image[g][x, y] += 1
+        return image
