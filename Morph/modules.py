@@ -52,6 +52,9 @@ class Counter:
             image[g][x, y] += 1
         return image
 
+    def custom(self, data, counter, *args):
+        return counter(data, *args)
+
 
 class Muxer:
     def naive(self, image):
@@ -61,6 +64,9 @@ class Muxer:
     def maximum(self, image):
         array = [image[i] for i in image]
         return numpy.maximum.reduce(array)
+
+    def custom(self, data, muxer, *args):
+        return muxer(data, *args)
 
 
 class MorphologicalFilter:
@@ -81,6 +87,9 @@ class MorphologicalFilter:
         image = Morph.operators.closing(image, element)
         return Morph.operators.opening(image, element)
 
+    def custom(self, data, morphological_filter, *args):
+        return morphological_filter(data, *args)
+
 
 class Thresholder:
     def naive(self, image):
@@ -91,6 +100,9 @@ class Thresholder:
         image = image >= tau
         return image.astype(dtype)
 
+    def custom(self, data, thresholder, *args):
+        return thresholder(data, *args)
+
 
 class AlgebraicFilter:
     def naive(self, image):
@@ -100,3 +112,22 @@ class AlgebraicFilter:
         dtype = image.dtype
         image = skimage.morphology.remove_small_objects(image, la)
         return image.astype(dtype)
+
+    def area_closing(self, image, la):
+        dtype = image.dtype
+        image = skimage.morphology.remove_small_holes(image, la)
+        return image.astype(dtype)
+
+    def custom(self, data, algebraic_filter, *args):
+        return algebraic_filter(data, *args)
+
+
+class Labeler:
+    def naive(self, image):
+        return image
+
+    def blob(self, image, element):
+        return Morph.operators.labeling(image, element)
+
+    def custom(self, image, labeler, *args):
+        return labeler(data, *args)
