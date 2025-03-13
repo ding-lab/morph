@@ -13,7 +13,7 @@ pip install git+https://git@github.com/ding-lab/morph.git
 The following code snippet shows how to run Morph for Fig. 5:
 
 ```
-import Morph, csv, gzip, numpy
+import Morph, numpy
 
 d = 10
 G = {'TFF2', 'KRT7'}
@@ -21,17 +21,7 @@ S = numpy.ones((3, 3))
 tau = 3
 lambda_ = 4
 
-g = []
-x = []
-y = []
-with gzip.open('path/to/transcripts.csv.gz', 'rt') as f:
-    dict_reader = csv.DictReader(f)
-    for row in dict_reader:
-        g.append(row['feature_name'])
-        x.append(float(row['x_location']))
-        y.append(float(row['y_location']))
-
-data = {'g': g, 'x': numpy.array(x), 'y': numpy.array(y)}
+data = Morph.readers.xenium('path/to/transcripts.csv.gz')
 
 Morph.backbone(data, ['xenium', d], ['total', G], ['maximum'], ['closing', S], ['binary', tau], ['area_opening', lambda_], ['blob', S])
 ```
