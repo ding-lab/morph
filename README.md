@@ -15,15 +15,25 @@ The following code snippet shows how to run Morph for Fig. 5:
 ```
 import Morph, numpy
 
+# Parameters
 d = 10
 G = {'TFF2', 'KRT7'}
 S = numpy.ones((3, 3))
 tau = 3
 lambda_ = 4
 
-data = Morph.readers.xenium('path/to/transcripts.csv.gz')
+# Loading
+data = Morph.readers.transcripts('path/to/transcripts.csv.gz')
 
-Morph.backbone(data, ['xenium', d], ['total', G], ['maximum'], ['closing', S], ['binary', tau], ['area_opening', lambda_], ['blob', S])
+# Running
+image = Morph.backbone(data, ['xenium', d], ['total', G], ['maximum'], ['closing', S], ['binary', tau], ['area_opening', lambda_], ['blob', S])
+
+cells = Morph.readers.cells('path/to/cells.csv.gz')
+mapper = Morph.modules.Mapper()
+cells = mapper.xenium(cells, d)
+
+# Saving
+Morph.writers.xenium('path/to/csv', image, cells)
 ```
 
 ## Contact
