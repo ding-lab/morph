@@ -1,6 +1,18 @@
+import multiprocessing
 import numpy
 import scipy
 import skimage
+
+
+def _propagation_function(image, x, y, element=None):
+    dilated = numpy.zeros_like(image)
+    dilated[x, y] = 1
+    reconstructed = reconstruction_by_dilation(dilated, image, element)
+    i = 0
+    while not numpy.array_equal(dilated, reconstructed):
+        dilated = geodesic_dilation(dilated, image, element)
+        i += 1
+    return i
 
 
 def erosion(image, element=None):
@@ -48,15 +60,11 @@ def reconstruction_by_dilation(marker_image, mask_image, element=None):
 def propagation_function(image, element=None):
     points = numpy.where(image)
     propagation = numpy.zeros_like(image)
-    for x, y in zip(*points):
-        dilated = numpy.zeros_like(image)
-        dilated[x, y] = 1
-        reconstructed = reconstruction_by_dilation(dilated, image, element)
-        i = 0
-        while not numpy.array_equal(dilated, reconstructed):
-            dilated = geodesic_dilation(dilated, image, element)
-            i += 1
-        propagation[x, y] = i
+    iterable = [(image, x, y, element) for x, y in zip(*points)]
+    with multiprocessing.Pool() as pool:
+        results = pool.starmap(_propagation_function, iterable)
+    for x, y, r in zip(*points, results):
+        propagation[x, y] = r
     return propagation
 
 
