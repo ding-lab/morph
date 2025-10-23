@@ -85,3 +85,6 @@ class MorphologicalFilter:
     def close_open(self, image, element):
         image = Morph.operators.closing(image, element)
         return Morph.operators.opening(image, element)
+
+    def custom(self, image, morphological_filter, *args):
+        return morphological_filter(image, *args)
