@@ -88,3 +88,8 @@ class MorphologicalFilter:
 
     def custom(self, image, morphological_filter, *args):
         return morphological_filter(image, *args)
+
+
+class Thresholder:
+    def naive(self, image):
+        return image
