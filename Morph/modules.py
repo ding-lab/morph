@@ -133,3 +133,8 @@ class AlgebraicFilter:
 
     def custom(self, image, algebraic_filter, *args):
         return algebraic_filter(image, *args)
+
+
+class Labeler:
+    def naive(self, image):
+        return image * 1
