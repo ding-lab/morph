@@ -47,3 +47,9 @@ class Counter:
 
     def custom(self, data, counter, *args):
         return counter(data, *args)
+
+
+class Muxer:
+    def naive(self, image):
+        _, image = image.popitem()
+        return image
