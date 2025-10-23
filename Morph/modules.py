@@ -17,3 +17,6 @@ class Mapper:
         x = _floor(data['x'] / d)
         y = _floor(data['y'] / d)
         return {'g': data['g'], 'v': data['v'], 'x': x, 'y': y}
+
+    def custom(self, data, mapper, *args):
+        return mapper(data, *args)
