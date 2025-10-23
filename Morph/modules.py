@@ -61,3 +61,6 @@ class Muxer:
 
     def maximum(self, image):
         return _point_wise_maximum(image)
+
+    def custom(self, image, muxer, *args):
+        return muxer(image, *args)
