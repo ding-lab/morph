@@ -28,6 +28,17 @@ def _point_wise_maximum(image):
     return numpy.maximum.reduce(array)
 
 
+def _area_opening(image, element, lambda_):
+    label = Morph.operators.labeling(
+        image, element) if image.dtype == bool else image
+    x = label[label != 0]
+    index, size = numpy.unique_counts(x)
+    test_elements = index[size < lambda_]
+    mask = numpy.isin(label, test_elements)
+    image[mask] = 0
+    return image
+
+
 class Mapper:
     def naive(self, data):
         return data
@@ -104,3 +115,6 @@ class Thresholder:
 class AlgebraicFilter:
     def naive(self, image):
         return image
+
+    def area_opening(self, image, element, lambda_):
+        return _area_opening(image, element, lambda_)
