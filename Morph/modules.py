@@ -99,3 +99,8 @@ class Thresholder:
 
     def custom(self, image, thresholder, *args):
         return thresholder(image, *args)
+
+
+class AlgebraicFilter:
+    def naive(self, image):
+        return image
