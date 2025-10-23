@@ -96,3 +96,6 @@ class Thresholder:
 
     def binary(self, image, tau):
         return image >= tau
+
+    def custom(self, image, thresholder, *args):
+        return thresholder(image, *args)
