@@ -141,3 +141,6 @@ class Labeler:
 
     def blob(self, image, element):
         return Morph.operators.labeling(image, element)
+
+    def custom(self, image, labeler, *args):
+        return labeler(image, *args)
