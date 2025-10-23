@@ -93,3 +93,6 @@ class MorphologicalFilter:
 class Thresholder:
     def naive(self, image):
         return image
+
+    def binary(self, image, tau):
+        return image >= tau
