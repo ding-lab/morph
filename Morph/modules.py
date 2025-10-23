@@ -21,6 +21,11 @@ def _count(data, G, method):
     return image
 
 
+def _point_wise_maximum(image):
+    array = [image[i] for i in image]
+    return numpy.maximum.reduce(array)
+
+
 class Mapper:
     def naive(self, data):
         return data
@@ -53,3 +58,6 @@ class Muxer:
     def naive(self, image):
         _, image = image.popitem()
         return image
+
+    def maximum(self, image):
+        return _point_wise_maximum(image)
