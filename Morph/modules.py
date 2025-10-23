@@ -1,5 +1,7 @@
 import numpy
 
+import Morph.operators
+
 
 def _floor(x):
     return numpy.astype(x, int)
@@ -69,3 +71,6 @@ class Muxer:
 class MorphologicalFilter:
     def naive(self, image):
         return image
+
+    def opening(self, image, element):
+        return Morph.operators.opening(image, element)
