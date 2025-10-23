@@ -64,3 +64,8 @@ class Muxer:
 
     def custom(self, image, muxer, *args):
         return muxer(image, *args)
+
+
+class MorphologicalFilter:
+    def naive(self, image):
+        return image
