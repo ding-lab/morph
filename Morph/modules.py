@@ -5,7 +5,7 @@ def _floor(x):
     return numpy.astype(x, int)
 
 
-def _count(data, G):
+def _count(data, G, method):
     G = G & set(data['g'])
     image = {}
     X = max(data['x'])
@@ -15,8 +15,9 @@ def _count(data, G):
         image[g] = numpy.zeros(shape, int)
     for g, v, x, y in zip(data['g'], data['v'], data['x'], data['y']):
         if g in G:
-            image[g][x, y] = v
-            G.remove(g)
+            image[g][x, y] += v
+            if method == 'naive':
+                G.remove(g)
     return image
 
 
@@ -39,4 +40,7 @@ class Mapper:
 
 class Counter:
     def naive(self, data, G):
-        return _count(data, G)
+        return _count(data, G, Counter.naive.__name__)
+
+    def total(self, data, G):
+        return _count(data, G, Counter.total.__name__)
