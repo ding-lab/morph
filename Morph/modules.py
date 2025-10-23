@@ -130,3 +130,6 @@ class AlgebraicFilter:
 
     def area_closing(self, image, element, lambda_):
         return _area_closing(image, element, lambda_)
+
+    def custom(self, image, algebraic_filter, *args):
+        return algebraic_filter(image, *args)
