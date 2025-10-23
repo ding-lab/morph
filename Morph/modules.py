@@ -5,6 +5,21 @@ def _floor(x):
     return numpy.astype(x, int)
 
 
+def _count(data, G):
+    G = G & set(data['g'])
+    image = {}
+    X = max(data['x'])
+    Y = max(data['y'])
+    shape = (X + 1, Y + 1)
+    for g in G:
+        image[g] = numpy.zeros(shape, int)
+    for g, v, x, y in zip(data['g'], data['v'], data['x'], data['y']):
+        if g in G:
+            image[g][x, y] = v
+            G.remove(g)
+    return image
+
+
 class Mapper:
     def naive(self, data):
         return data
@@ -20,3 +35,8 @@ class Mapper:
 
     def custom(self, data, mapper, *args):
         return mapper(data, *args)
+
+
+class Counter:
+    def naive(self, data, G):
+        return _count(data, G)
