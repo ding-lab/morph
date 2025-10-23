@@ -1,6 +1,6 @@
 [project]
 name = "morph"
-version = "0.22.0"
+version = "0.23.0"
 dependencies = [
   "numpy==2.3.0",
   "scikit-image==0.25.2",

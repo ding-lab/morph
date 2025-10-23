@@ -74,3 +74,6 @@ class MorphologicalFilter:
 
     def opening(self, image, element):
         return Morph.operators.opening(image, element)
+
+    def closing(self, image, element):
+        return Morph.operators.closing(image, element)
