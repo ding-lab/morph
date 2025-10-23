@@ -44,3 +44,6 @@ class Counter:
 
     def total(self, data, G):
         return _count(data, G, Counter.total.__name__)
+
+    def custom(self, data, counter, *args):
+        return counter(data, *args)
