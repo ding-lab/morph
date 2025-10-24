@@ -120,3 +120,9 @@ class Layer():
         layers = _layer(~image, element, 0, tissue)
         layers -= _layer(image, element, 1, tissue)
         return layers
+
+    def maximum(self, image, element=None, index=None, tissue=None):
+        image = image != 0 if index is None else _isin(image, list(index))
+        layers = _layer(~image, element, 1, tissue)
+        layers -= _layer(image, element, 0, tissue)
+        return layers
