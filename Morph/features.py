@@ -146,3 +146,9 @@ class Shape():
         maximum = _maximum(propagation, image, index)
         shape = 4 * size / (PI * maximum**2)
         return dict(zip(index, shape))
+
+
+class Size():
+    def count(self, image):
+        index, size = _count(image)
+        return dict(zip(index, size))
