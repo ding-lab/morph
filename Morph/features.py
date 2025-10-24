@@ -21,6 +21,45 @@ def _any(a):
     return numpy.any(a)
 
 
+def _isin(element, test_elements):
+    return numpy.isin(element, test_elements)
+
+
+def _padding_func(vector, iaxis_pad_width, iaxis, kwargs):
+    pad = kwargs.get('pad')
+    vector[:iaxis_pad_width[0]] = pad[0]
+    vector[-iaxis_pad_width[1]:] = pad[-1]
+    pad[0] = 1 - pad[0]
+    pad[-1] = 1 - pad[-1]
+
+
+def _distance(image, sampling, border_value, tissue, method):
+    if tissue is None:
+        tissue = numpy.ones_like(image)
+    image[tissue == 0] = border_value
+    if method == 'visium':
+        shape = 2 * image.shape[0] - image.shape[1], image.shape[1]
+        unmapped = numpy.ones(shape, bool)
+        grid = numpy.indices(shape)
+        checkerboard = 1 - sum(grid) % 2
+        x, y = _nonzero(checkerboard)
+        unmapped[x, y] = image[(x + y) // 2, y]
+        image = unmapped
+        sampling = [50, 50 * 3**0.5]
+    pad_width = 1
+    pad = [0, 1] if method == 'visium' and not border_value else [border_value]
+    input_ = numpy.pad(image, pad_width, _padding_func, pad=pad)
+    distances = scipy.ndimage.distance_transform_edt(input_, sampling)
+    distances = distances[pad_width:-pad_width, pad_width:-pad_width]
+    if method == 'visium':
+        shape = sum(distances.shape) // 2, distances.shape[1]
+        mapped = numpy.zeros(shape)
+        mapped[(x + y) // 2, y] = distances[x, y]
+        distances = mapped
+    distances[tissue == 0] = 0
+    return distances
+
+
 class Center():
     def geodesic(self, image, element=None):
         propagation = Morph.operators.propagation_function(image, element)
@@ -45,3 +84,11 @@ class Center():
                 centers[i].add(point)
             image = eroded
         return centers
+
+
+class Distance:
+    def minimum(self, image, index=None, tissue=None, d=1, method=None):
+        image = image != 0 if index is None else _isin(image, list(index))
+        distances = _distance(~image, d, 0, tissue, method)
+        distances -= _distance(image, d, 1, tissue, method)
+        return distances
