@@ -92,3 +92,9 @@ class Distance:
         distances = _distance(~image, d, 0, tissue, method)
         distances -= _distance(image, d, 1, tissue, method)
         return distances
+
+    def maximum(self, image, index=None, tissue=None, d=1, method=None):
+        image = image != 0 if index is None else _isin(image, list(index))
+        distances = _distance(~image, d, 1, tissue, method)
+        distances -= _distance(image, d, 0, tissue, method)
+        return distances
