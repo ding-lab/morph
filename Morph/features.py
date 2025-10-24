@@ -3,6 +3,8 @@ import scipy
 
 import Morph.operators
 
+PI = numpy.pi
+
 
 def _unique(image):
     ar = image[image != 0]
@@ -74,6 +76,15 @@ def _layer(image, structure, border_value, tissue):
     return layers
 
 
+def _count(image):
+    x = image[image != 0]
+    return numpy.unique_counts(x)
+
+
+def _maximum(input_, labels, index):
+    return scipy.ndimage.maximum(input_, labels, index)
+
+
 class Center():
     def geodesic(self, image, element=None):
         propagation = Morph.operators.propagation_function(image, element)
@@ -126,3 +137,12 @@ class Layer():
         layers = _layer(~image, element, 1, tissue)
         layers -= _layer(image, element, 0, tissue)
         return layers
+
+
+class Shape():
+    def roundness(self, image, element=None):
+        propagation = Morph.operators.propagation_function(image, element)
+        index, size = _count(image)
+        maximum = _maximum(propagation, image, index)
+        shape = 4 * size / (PI * maximum**2)
+        return dict(zip(index, shape))
