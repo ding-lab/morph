@@ -60,6 +60,20 @@ def _distance(image, sampling, border_value, tissue, method):
     return distances
 
 
+def _layer(image, structure, border_value, tissue):
+    if tissue is None:
+        tissue = numpy.ones_like(image)
+    image[tissue == 0] = border_value
+    layers = image * 1
+    while _any(image):
+        layers += scipy.ndimage.binary_erosion(image,
+                                               structure,
+                                               output=image,
+                                               border_value=border_value)
+    layers[tissue == 0] = 0
+    return layers
+
+
 class Center():
     def geodesic(self, image, element=None):
         propagation = Morph.operators.propagation_function(image, element)
@@ -98,3 +112,11 @@ class Distance:
         distances = _distance(~image, d, 1, tissue, method)
         distances -= _distance(image, d, 0, tissue, method)
         return distances
+
+
+class Layer():
+    def minimum(self, image, element=None, index=None, tissue=None):
+        image = image != 0 if index is None else _isin(image, list(index))
+        layers = _layer(~image, element, 0, tissue)
+        layers -= _layer(image, element, 1, tissue)
+        return layers
